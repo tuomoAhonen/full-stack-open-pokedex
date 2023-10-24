@@ -1,15 +1,22 @@
 module.exports = {
 	env: {
-		browser: true,
-		es6: true,
+		//browser: true,
+		commonjs: true,
+		es2023: true,
+		node: true,
 		'jest/globals': true,
 	},
 	extends: ['eslint:recommended', 'plugin:react/recommended'],
+	globals: {
+		//require: 'readonly',
+		//process: 'readonly',
+		document: 'readonly',
+	},
 	parserOptions: {
 		ecmaFeatures: {
 			jsx: true,
 		},
-		ecmaVersion: 2018,
+		ecmaVersion: 2023,
 		sourceType: 'module',
 	},
 	plugins: ['react', 'jest'],
@@ -25,9 +32,10 @@ module.exports = {
 		//'no-console': 'error',
 		'react/prop-types': 0,
 	},
-	globals: {
-		require: 'readonly',
-		process: 'readonly',
+	settings: {
+		react: {
+			version: 'detect',
+		},
 	},
 };
 
