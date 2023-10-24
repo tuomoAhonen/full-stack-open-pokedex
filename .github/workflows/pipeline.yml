@@ -19,3 +19,7 @@ jobs:
       - name: Check style
         run: npm run eslint
       # '- name' is optional. You can use '- run: npm run eslint' and the command will be the name as default
+      - name: Build
+        run: npm run build
+      - name: Tests with jest
+        run: npm run test
