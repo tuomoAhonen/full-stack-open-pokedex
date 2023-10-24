@@ -14,3 +14,8 @@ jobs:
     steps:
       - name: Say hello
         run: echo "Hello World!"
+      - name: Date is
+        run: date
+      - name: Directory content
+        run: ls -l
+        # why are these steps tagged as - name instead of - id ? something to think about
