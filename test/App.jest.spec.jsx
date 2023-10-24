@@ -30,7 +30,7 @@ describe('<App />', () => {
 	it('shows LoadingSpinner', async () => {
 		axiosMock.get.mockResolvedValueOnce({});
 		await act(async () => {
-			const {getByAltText} = render(
+			const {getByAltText} =render(
 				<BrowserRouter>
 					<App />
 				</BrowserRouter>
