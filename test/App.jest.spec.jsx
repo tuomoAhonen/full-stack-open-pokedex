@@ -26,16 +26,18 @@ describe('<App />', () => {
 		expect(axiosMock.get).toHaveBeenCalledWith('https://pokeapi.co/api/v2/pokemon/?limit=50');
 	});
 
+	// LoadingSpinner works at development environment & production build, but this test does not work
 	/*
 	it('shows LoadingSpinner', async () => {
 		axiosMock.get.mockResolvedValueOnce({});
 		await act(async () => {
-			const {getByAltText} =render(
+			const {getByAltText} = render(
 				<BrowserRouter>
 					<App />
 				</BrowserRouter>
 			);
-			expect(getByAltText('Loading...')).toBeVisible();
+			//console.log(getByAltText('Loading...'));
+			//expect(getByAltText('Loading...')).toBeVisible();
 		});
 	});
 	*/
