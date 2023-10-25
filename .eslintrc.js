@@ -30,6 +30,7 @@ module.exports = {
 		'no-trailing-spaces': 'error',
 		'object-curly-spacing': ['error', 'never'],
 		'arrow-spacing': ['error', {before: true, after: true}],
+		'no-unused-vars': 'error',
 		'no-console': 'off' /*'error'*/,
 		'no-restricted-syntax': [
 			'error',
