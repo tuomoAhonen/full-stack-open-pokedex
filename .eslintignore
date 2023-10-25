@@ -2,5 +2,5 @@ webpack.config.js
 node_modules/
 dist/
 .eslintrc.js
-test/e2e/
+cypress/
 cypess.config.js
