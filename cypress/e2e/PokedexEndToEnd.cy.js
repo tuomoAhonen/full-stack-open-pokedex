@@ -1,4 +1,6 @@
-import {ivysaur, statNameFormatter} from './helperIvysaur';
+import {getIvysaurObject, statNameFormatter} from './helperIvysaur';
+
+const ivysaur = getIvysaurObject();
 
 describe('Pokedex', () => {
 	it('front page can be opened', () => {

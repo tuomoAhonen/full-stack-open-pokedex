@@ -1,14 +1,18 @@
 import axios from 'axios';
 
-let ivysaur;
+const getIvysaurObject = () => {
+	let ivysaur;
 
-axios
-	.get('https://pokeapi.co/api/v2/pokemon/ivysaur')
-	.then((response) => (ivysaur = response.data))
-	.catch((e) => console.log(e));
+	axios
+		.get('https://pokeapi.co/api/v2/pokemon/ivysaur')
+		.then((response) => (ivysaur = response.data))
+		.catch((e) => console.log(e));
 
-//console.log(ivysaur);
+	//console.log(ivysaur);
+	return ivysaur;
+};
 
 const statNameFormatter = (statName) => new String(statName).replace('-', ' ');
 
-export {ivysaur, statNameFormatter};
+export {getIvysaurObject, statNameFormatter};
+
