@@ -2,5 +2,4 @@ webpack.config.js
 node_modules/
 dist/
 .eslintrc.js
-cypress/
 cypess.config.js
