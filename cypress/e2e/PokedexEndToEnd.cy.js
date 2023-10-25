@@ -1,4 +1,4 @@
-import {getIvysaurObject, statNameFormatter} from './helperIvysaur';
+import {getIvysaurObject, statNameFormatter} from './Helpers';
 
 const ivysaur = getIvysaurObject();
 
@@ -9,7 +9,7 @@ describe('Pokedex', () => {
 		cy.contains('Pokémon and Pokémon character names are trademarks of Nintendo.');
 	});
 
-	it('navigate from home page to ivysaur view and check for it\'s content', () => {
+	it("navigate from home page to ivysaur view and check for it's content", () => {
 		cy.visit('http://localhost:5000');
 		cy.contains('ivysaur').click();
 		cy.url().should('include', '/pokemon/ivysaur');
