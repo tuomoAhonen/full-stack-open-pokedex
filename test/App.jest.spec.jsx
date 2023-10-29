@@ -6,13 +6,13 @@ import {act} from 'react-dom/test-utils';
 import '@testing-library/jest-dom';
 import App from '../src/App';
 
-jest.mock('axios');
+jest.mock(`axios`);
 
-describe('<App />', () => {
-	it('fetches data', async () => {
+describe(`<App />`, () => {
+	it(`fetches data`, async () => {
 		axiosMock.get.mockResolvedValueOnce({
 			data: {
-				results: [{url: 'https://pokeapi.co/api/v2/pokemon/1/', name: 'bulbasaur', id: 1}],
+				results: [{url: `https://pokeapi.co/api/v2/pokemon/1/`, name: `bulbasaur`, id: 1}],
 			},
 		});
 		await act(async () => {
@@ -23,7 +23,7 @@ describe('<App />', () => {
 			);
 		});
 		expect(axiosMock.get).toHaveBeenCalledTimes(1);
-		expect(axiosMock.get).toHaveBeenCalledWith('https://pokeapi.co/api/v2/pokemon/?limit=50');
+		expect(axiosMock.get).toHaveBeenCalledWith(`https://pokeapi.co/api/v2/pokemon/?limit=50`);
 	});
 
 	// LoadingSpinner works at development environment & production build, but this test does not work
@@ -42,7 +42,7 @@ describe('<App />', () => {
 	});
 	*/
 
-	it('shows error', async () => {
+	it(`shows error`, async () => {
 		axiosMock.get.mockRejectedValueOnce(new Error());
 		await act(async () => {
 			render(
@@ -51,7 +51,7 @@ describe('<App />', () => {
 				</BrowserRouter>
 			);
 		});
-		expect(screen.getByTestId('error')).toBeVisible();
+		expect(screen.getByTestId(`error`)).toBeVisible();
 	});
 });
 

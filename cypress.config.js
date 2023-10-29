@@ -1,5 +1,5 @@
-const {defineConfig} = require('cypress');
-const webpackConfig = require('./webpack.config');
+const {defineConfig} = require(`cypress`);
+const webpackConfig = require(`./webpack.config`);
 
 // setupNodeEvents is used for custom code inside the cypress testing and it's behavior
 module.exports = defineConfig({
@@ -9,8 +9,8 @@ module.exports = defineConfig({
 			// component testing node events setup code
 		},
 		devServer: {
-			framework: 'react',
-			bundler: 'webpack',
+			framework: `react`,
+			bundler: `webpack`,
 			// optionally pass in webpack config
 			webpackConfig,
 			// or a function - the result is merged with any
@@ -27,7 +27,7 @@ module.exports = defineConfig({
 		setupNodeEvents(on, config) {
 			// e2e testing node events setup code
 		},
-		baseUrl: 'http://localhost:5000',
+		baseUrl: `http://localhost:5000`,
 	},
 	screenshotOnRunFailure: false,
 	video: false,
