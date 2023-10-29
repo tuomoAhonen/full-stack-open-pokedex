@@ -1,4 +1,4 @@
-import {getIvysaurObject, statNameFormatter} from './Helpers';
+//import {getIvysaurObject, statNameFormatter} from './Helpers';
 
 describe('Pokedex', () => {
 	it('front page can be opened', () => {
