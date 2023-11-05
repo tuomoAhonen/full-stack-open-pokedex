@@ -33,5 +33,5 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:5000
       # deployment to Render
-      - name: Render GitHub Action
+      - name: Render Depoloyment trigger after successful tests
         run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICEID}}?key=${{secrets.RENDER_APIKEY}}
