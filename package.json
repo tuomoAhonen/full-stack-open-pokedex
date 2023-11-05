@@ -5,7 +5,6 @@
 	"main": "src/index.js",
 	"scripts": {
 		"build": "webpack --mode production",
-		"build-render": "webpack",
 		"eslint": "eslint \"./**/*.{js,jsx}\"",
 		"start": "webpack-dev-server --open --mode development",
 		"start-prod": "node app.js",
@@ -65,3 +64,4 @@
 		"silent": false
 	}
 }
+
