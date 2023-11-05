@@ -13,6 +13,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '21.0.0'
+          retries: 10
+          wait: 20000
       - name: Install dependencies
         run: npm install
       # Enviroment setup above and the very important test stuff after this comment line
@@ -30,3 +32,13 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
+          wait: 3000
+      # deployment to Render
+      - name: Render GitHub Action
+        uses: Bounceapp/render-action@0.7.1
+        with:
+          render-token: ${{secrets.RENDER_APITOKEN}}
+          service-id: ${{secrets.RENDER_SERVICEID}}
+          retries: 3
+          wait: 10000
+          sleep: 3000
