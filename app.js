@@ -13,6 +13,8 @@ app.get(`/version`, (request, response) => {
 
 app.get(`/health`, (request, response) => {
 	// Could this be fetched from somewhere / auto-updates?
+	throw `error test`;
+	// eslint-disable-next-line no-unreachable
 	response.send(`ok`);
 });
 
