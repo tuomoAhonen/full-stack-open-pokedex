@@ -13,8 +13,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '21.0.0'
-          retries: 10
-          wait: 20000
       - name: Install dependencies
         run: npm install
       # Enviroment setup above and the very important test stuff after this comment line
