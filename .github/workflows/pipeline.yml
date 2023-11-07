@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - newfeaturebytuomo
   pull_request:
     branches: [master]
     types: [opened, synchronize]
@@ -35,4 +36,5 @@ jobs:
           wait-on: http://localhost:5000
       # deployment to Render
       - name: Render Depoloyment trigger after successful tests
+        if: ${{ github.event_name == 'push' }}
         run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICEID}}?key=${{secrets.RENDER_APIKEY}}
