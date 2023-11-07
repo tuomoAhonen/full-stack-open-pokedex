@@ -34,9 +34,7 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
-      - name: check ref name
-        run: echo 'The name of your branch is ${{ github.ref }}'
         # deployment to Render
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       - name: Render Depoloyment trigger after successful tests
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICEID}}?key=${{secrets.RENDER_APIKEY}}
