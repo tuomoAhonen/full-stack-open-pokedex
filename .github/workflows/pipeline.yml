@@ -38,7 +38,7 @@ jobs:
   # deployment to Render
   deployment_to_render:
     needs: [testing]
-    runs-on: ubuntu@latest
+    runs-on: ubuntu-latest
     steps:
       - name: Render Depoloyment trigger after successful tests
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
@@ -46,7 +46,7 @@ jobs:
   # tag release and bumbing it on github
   tag_release:
     needs: [deployment_to_render]
-    runs-on: ubuntu@latest
+    runs-on: ubuntu-latest
     steps:
       - name: Bumb up the version number
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
