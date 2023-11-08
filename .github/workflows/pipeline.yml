@@ -10,10 +10,11 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  simple_deployment_pipeline:
+  # testing app
+  testing:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: '21.0.0'
@@ -34,12 +35,17 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
-        # deployment to Render
+  # deployment to Render
+  deployment_to_render:
+    needs: [testing]
+    runs-on: ubuntu@latest
+    steps:
       - name: Render Depoloyment trigger after successful tests
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICEID}}?key=${{secrets.RENDER_APIKEY}}
+  # tag release and bumbing it on github
   tag_release:
-    needs: [simple_deployment_pipeline]
+    needs: [deployment_to_render]
     runs-on: ubuntu@latest
     steps:
       - name: Bumb up the version number
