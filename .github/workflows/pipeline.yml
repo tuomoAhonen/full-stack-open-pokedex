@@ -35,6 +35,10 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
+      - name: Commit messages
+        env:
+          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
+        run: echo "$COMMIT_MESSAGES"
   # deployment to Render
   deployment_to_render:
     if: ${{github.event_name == 'push' && github.ref == 'refs/heads/master'}}
