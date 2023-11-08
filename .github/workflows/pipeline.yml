@@ -37,19 +37,26 @@ jobs:
           wait-on: http://localhost:5000
   # deployment to Render
   deployment_to_render:
+    if: ${{github.event_name == 'push' && github.ref == 'refs/heads/master'}}
     needs: [testing]
     runs-on: ubuntu-latest
     steps:
       - name: Render Depoloyment trigger after successful tests
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        #
         run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICEID}}?key=${{secrets.RENDER_APIKEY}}
   # tag release and bumbing it on github
   tag_release:
-    needs: [deployment_to_render]
+    if: ${{github.event_name == 'push' && github.ref == 'refs/heads/master'}}
+    needs: [testing, deployment_to_render]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Bumb up the version number
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        #
         uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
