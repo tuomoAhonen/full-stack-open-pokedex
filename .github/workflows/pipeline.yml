@@ -38,3 +38,15 @@ jobs:
       - name: Render Depoloyment trigger after successful tests
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICEID}}?key=${{secrets.RENDER_APIKEY}}
+  tag_release:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu@latest
+    steps:
+      - name: Bumb up the version number
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        uses: anothrNick/github-tag-action@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          DEFAULT_BUMP: patch
+          WITH_V: true
+          INITIAL_VERSION: 1.0.0
