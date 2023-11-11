@@ -87,7 +87,7 @@ jobs:
           webhook_id: ${{secrets.WEBHOOK_ID}}
           webhook_token: ${{secrets.WEBHOOK_TOKEN}}
           color: '#FF4500'
-          args: 'Testing initiated by ${{github.actor}} has errors. SOS!\nPlease fix errors before merging to master branch.'
+          args: 'Testing initiated by ${{github.actor}} has errors. SOS! Please fix errors before merging to master branch.'
   deployment_notify_to_discord:
     needs: [testing, deployment_to_render]
     runs-on: ubuntu-latest
@@ -100,7 +100,7 @@ jobs:
           webhook_id: ${{secrets.WEBHOOK_ID}}
           webhook_token: ${{secrets.WEBHOOK_TOKEN}}
           color: '#7CFC00'
-          args: 'Build initiated by ${{github.actor}} was success.\nNew version of the app is running on https://pokedex-exercise.onrender.com/'
+          args: 'Build initiated by ${{github.actor}} was success. New version of the app is running on https://pokedex-exercise.onrender.com/'
       - name: Failed build & deployment
         if: ${{failure()}}
         uses: appleboy/discord-action@master
@@ -108,4 +108,4 @@ jobs:
           webhook_id: ${{secrets.WEBHOOK_ID}}
           webhook_token: ${{secrets.WEBHOOK_TOKEN}}
           color: '#FF4500'
-          args: 'Build initiated by ${{github.actor}} failed. SOS!\nPlease fix errors.'
+          args: 'Build initiated by ${{github.actor}} failed. SOS! Please fix errors.'
