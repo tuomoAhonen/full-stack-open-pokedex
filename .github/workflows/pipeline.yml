@@ -89,7 +89,7 @@ jobs:
           color: '#FF4500'
           args: 'Testing initiated by ${{github.actor}} has errors. SOS! Please fix errors before merging to master branch.'
   deployment_notify_to_discord:
-    needs: [testing, deployment_to_render]
+    needs: [testing, deployment_to_render, testing_notify_to_discord]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
