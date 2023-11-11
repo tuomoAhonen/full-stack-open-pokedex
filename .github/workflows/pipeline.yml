@@ -76,12 +76,11 @@ jobs:
         if: ${{success()}}
         uses: rjstone/discord-webhook-notify@v1
         with:
-          webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
-          severity: 'info'
-          text: 'Test was successful'
-          details: 'Testing initiated by ${{github.triggering_actor}} was success.'
-          description: 'Commit by ${{github.event.push.head_committer.username}} on ${{github.event.push.head_committer.timestamp}}'
-      - name: 'Failed test'
+          webhook_id: ${{secrets.WEBHOOK_ID}}
+          webhook_token: ${{secrets.WEBHOOK_TOKEN}}
+          color: '#7CFC00'
+          args: 'Testing initiated by ${{github.triggering_actor}} was success.'
+      - name: Failed test
         if: ${{failure()}}
         uses: rjstone/discord-webhook-notify@v1
         with:
