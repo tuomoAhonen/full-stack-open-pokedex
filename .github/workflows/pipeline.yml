@@ -80,7 +80,6 @@ jobs:
           severity: 'info'
           text: 'Test was successful'
           details: 'Testing initiated by ${{github.triggering_actor}} was success.'
-          description: 'Commit by ${{github.event.push.head_committer.username}} on ${{github.event.push.head_committer.timestamp}}'
       - name: 'Failed test'
         if: ${{failure()}}
         uses: rjstone/discord-webhook-notify@v1
@@ -89,7 +88,6 @@ jobs:
           severity: 'error'
           text: 'Test failed'
           details: 'Testing initiated by ${{github.triggering_actor}} has errors. SOS! Please fix errors before merging to master branch.'
-          description: 'Commit by ${{github.event.push.head_committer.username}} on ${{github.event.push.head_committer.timestamp}}'
   deployment_notify_to_discord:
     needs: [testing, deployment_to_render]
     runs-on: ubuntu-latest
@@ -103,7 +101,6 @@ jobs:
           severity: 'info'
           text: 'New version of the app is deployed & runs at https://pokedex-exercise.onrender.com/'
           details: 'Build initiated by ${{github.triggering_actor}} was success.'
-          description: 'Commit by ${{github.event.push.head_committer.username}} on ${{github.event.push.head_committer.timestamp}}'
       - name: 'Failed build & deployment'
         if: ${{failure()}}
         uses: rjstone/discord-webhook-notify@v1
@@ -112,4 +109,3 @@ jobs:
           severity: 'error'
           text: 'Build & deployment failure'
           details: 'Build initiated by ${{github.triggering_actor}} failed. SOS! Please fix errors.'
-          description: 'Commit by ${{github.event.push.head_committer.username}} on ${{github.event.push.head_committer.timestamp}}'
