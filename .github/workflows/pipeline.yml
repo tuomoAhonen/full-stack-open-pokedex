@@ -100,9 +100,8 @@ jobs:
           webhook_id: ${{secrets.WEBHOOK_ID}}
           webhook_token: ${{secrets.WEBHOOK_TOKEN}}
           color: '#7CFC00'
-          args: Build initiated by ${{github.triggering_actor}} was success.
-            Latest commit by ${{github.event.commits.*.commiter}} at ${{github.event.commits.*.timestamp}}
-            Severity ${{github.action_status}}
+          args: Build initiated by ${{github.triggering_actor}} was success.\n
+            Latest commit by ${{toJson(github.event.commits.*.commiter)}} at ${{toJson(github.event.commits.*.timestamp)}}\n
             New version of the app is running on https://pokedex-exercise.onrender.com/
       - name: Failed build & deployment
         if: ${{failure()}}
