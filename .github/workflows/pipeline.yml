@@ -41,7 +41,7 @@ jobs:
         run: echo "$COMMIT_MESSAGES"
   # deployment to Render
   deployment_to_render:
-    if: ${{((github.event_name == 'push' || github.event.event_name == 'pull_request') && github.ref == 'refs/heads/master' && !contains(toJson(github.event.commits.*.message), '#skip'))}}
+    if: ${{(github.event_name == 'push' || github.event_name == 'pull_request') && github.ref == 'refs/heads/master' && !contains(toJson(github.event.commits.*.message), '#skip')}}
     needs: [testing]
     runs-on: ubuntu-latest
     steps:
@@ -50,7 +50,7 @@ jobs:
         run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICEID}}?key=${{secrets.RENDER_APIKEY}}
   # tag release and bumbing it on Github
   tag_release:
-    if: ${{((github.event_name == 'push' || github.event.event_name == 'pull_request') && github.ref == 'refs/heads/master' && !contains(toJson(github.event.commits.*.message), '#skip'))}}
+    if: ${{(github.event_name == 'push' || github.event_name == 'pull_request') && github.ref == 'refs/heads/master' && !contains(toJson(github.event.commits.*.message), '#skip')}}
     needs: [testing, deployment_to_render]
     runs-on: ubuntu-latest
     permissions:
@@ -72,44 +72,44 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Successful test
+      - name: 'Successful test'
         if: ${{success()}}
         uses: rjstone/discord-webhook-notify@v1
         with:
           webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
-          serverity: info
+          serverity: 'info'
           text: 'Test was successful'
           details: 'Testing initiated by ${{github.triggering_actor}} was success.'
           description: 'Commit by ${{github.event.push.head_committer.username}} on ${{github.event.push.head_committer.timestamp}}'
-      - name: Failed test
+      - name: 'Failed test'
         if: ${{failure()}}
         uses: rjstone/discord-webhook-notify@v1
         with:
           webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
-          severity: error
+          severity: 'error'
           text: 'Test failed'
           details: 'Testing initiated by ${{github.triggering_actor}} has errors. SOS! Please fix errors before merging to master branch.'
           description: 'Commit by ${{github.event.push.head_committer.username}} on ${{github.event.push.head_committer.timestamp}}'
   deployment_notify_to_discord:
-    needs: [testing, deployment_to_render, testing_notify_to_discord]
+    needs: [testing, deployment_to_render]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Successful build & deployment with push
+      - name: 'Successful build & deployment with push'
         if: ${{success()}}
         uses: rjstone/discord-webhook-notify@v1
         with:
           webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
-          severity: info
+          severity: 'info'
           text: 'New version of the app is deployed & runs at https://pokedex-exercise.onrender.com/'
           details: 'Build initiated by ${{github.triggering_actor}} was success.'
           description: 'Commit by ${{github.event.push.head_committer.username}} on ${{github.event.push.head_committer.timestamp}}'
-      - name: Failed build & deployment
+      - name: 'Failed build & deployment'
         if: ${{failure()}}
         uses: rjstone/discord-webhook-notify@v1
         with:
           webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
-          severity: error
+          severity: 'error'
           text: 'Build & deployment failure'
           details: 'Build initiated by ${{github.triggering_actor}} failed. SOS! Please fix errors.'
           description: 'Commit by ${{github.event.push.head_committer.username}} on ${{github.event.push.head_committer.timestamp}}'
