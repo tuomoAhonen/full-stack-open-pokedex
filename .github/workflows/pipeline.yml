@@ -71,7 +71,7 @@ jobs:
     needs: [testing]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
       - name: Successful test
         if: ${{success()}}
         uses: appleboy/discord-action@master
@@ -79,7 +79,7 @@ jobs:
           webhook_id: ${{secrets.WEBHOOK_ID}}
           webhook_token: ${{secrets.WEBHOOK_TOKEN}}
           color: '#7CFC00'
-          args: 'Testing initiated by ${{github.actor}} was success.'
+          args: 'Testing initiated by ${{github.triggering_actor}} was success.'
       - name: Failed test
         if: ${{failure()}}
         uses: appleboy/discord-action@master
@@ -87,12 +87,12 @@ jobs:
           webhook_id: ${{secrets.WEBHOOK_ID}}
           webhook_token: ${{secrets.WEBHOOK_TOKEN}}
           color: '#FF4500'
-          args: 'Testing initiated by ${{github.actor}} has errors. SOS! Please fix errors before merging to master branch.'
+          args: 'Testing initiated by ${{github.triggering_actor}} has errors. SOS! Please fix errors before merging to master branch.'
   deployment_notify_to_discord:
     needs: [testing, deployment_to_render, testing_notify_to_discord]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
       - name: Successful build & deployment
         if: ${{success()}}
         uses: appleboy/discord-action@master
@@ -100,7 +100,10 @@ jobs:
           webhook_id: ${{secrets.WEBHOOK_ID}}
           webhook_token: ${{secrets.WEBHOOK_TOKEN}}
           color: '#7CFC00'
-          args: 'Build initiated by ${{github.actor}} was success. New version of the app is running on https://pokedex-exercise.onrender.com/'
+          args: Build initiated by ${{github.triggering_actor}} was success.
+            Latest commit by ${{github.event.commits.*.commiter}} at ${{github.event.commits.*.timestamp}}
+            Severity ${{github.action_status}}
+            New version of the app is running on https://pokedex-exercise.onrender.com/
       - name: Failed build & deployment
         if: ${{failure()}}
         uses: appleboy/discord-action@master
@@ -108,4 +111,4 @@ jobs:
           webhook_id: ${{secrets.WEBHOOK_ID}}
           webhook_token: ${{secrets.WEBHOOK_TOKEN}}
           color: '#FF4500'
-          args: 'Build initiated by ${{github.actor}} failed. SOS! Please fix errors.'
+          args: 'Build initiated by ${{github.triggering_actor}} failed. SOS! Please fix errors.'
