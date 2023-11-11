@@ -38,10 +38,10 @@ jobs:
       - name: Check commit messages for exercise 11.16
         env:
           COMMIT_MESSAGES: ${{toJson(github.event.commits.*.message)}}
-        run: echo "$COMMIT_MESSAGES"
+        run: echo '$COMMIT_MESSAGES' && echo '${{github.ref}}' && echo '${{github.event_name}}'
   # deployment to Render
   deployment_to_render:
-    if: ${{github.event_name == 'push' || github.event_name == 'pull_request' && github.ref == 'refs/heads/master' && !contains(toJson(github.event.commits.*.message), '#skip')}}
+    if: ${{github.event_name == ('push' || 'pull_request') && github.ref == 'refs/heads/master' && !contains(toJson(github.event.commits.*.message), '#skip')}}
     needs: [testing]
     runs-on: ubuntu-latest
     steps:
@@ -50,7 +50,7 @@ jobs:
         run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICEID}}?key=${{secrets.RENDER_APIKEY}}
   # tag release and bumbing it on Github
   tag_release:
-    if: ${{github.event_name == 'push' || github.event_name == 'pull_request' && github.ref == 'refs/heads/master' && !contains(toJson(github.event.commits.*.message), '#skip')}}
+    if: ${{github.event_name == ('push' || 'pull_request') && github.ref == 'refs/heads/master' && !contains(toJson(github.event.commits.*.message), '#skip')}}
     needs: [testing, deployment_to_render]
     runs-on: ubuntu-latest
     permissions:
