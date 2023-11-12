@@ -2,13 +2,13 @@ name: Periodic Check
 
 on:
   schedule:
-    - cron: 30 21 * * *
+    - cron: 00 22 * * *
 
 jobs:
   check_if_app_is_running_at_domain:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # - uses: actions/checkout@v4
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v3
         with:
@@ -28,3 +28,24 @@ jobs:
           # Basic auth login password pair.
           # Format: `login:password`
           # basic-auth: 'login:password' # Optional, default is empty
+  testing_notify_to_discord:
+    needs: [check_if_app_is_running_at_domain]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 'Successful periodic check'
+        if: ${{success()}}
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
+          severity: 'info'
+          text: 'Periodic check was successful'
+          details: 'App is running @ https://pokedex-exercise.onrender.com/'
+      - name: 'Failed periodic check'
+        if: ${{failure()}}
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
+          severity: 'error'
+          text: 'Periodic check failed'
+          details: 'App is not running at the moment...'
