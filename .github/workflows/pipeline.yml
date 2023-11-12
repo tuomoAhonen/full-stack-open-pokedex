@@ -115,6 +115,11 @@ jobs:
           text: 'Build & deployment failure'
           details: 'Build initiated by ${{github.triggering_actor}} failed. SOS! Please fix errors.'
           steps:
+  check_if_app_is_running_at_domain:
+    needs: [testing, deployment_to_render]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v3
         with:
