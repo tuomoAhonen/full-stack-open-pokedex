@@ -1,5 +1,10 @@
 name: Deployment pipeline
 
+# branches could be on their own workflow-files, because then you won't get skips to tasks and master-branch's protection & merge will work better
+# but there could be some other solution to this also, that I do not know yet
+# also in reality you could test deployment also before deploying the real app if you bought second domain and delete the test domain, after passing
+# so the merge to master-branch would trigger the real deployment for the app
+# or you could use this tactic and use roll-backs, whatever works for you
 on:
   push:
     branches:
@@ -35,10 +40,10 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
-      - name: Check commit messages for exercise 11.16
-        env:
-          COMMIT_MESSAGES: ${{toJson(github.event.commits.*.message)}}
-        run: echo '$COMMIT_MESSAGES' && echo '${{github.ref}}' && echo '${{github.event_name}}'
+      # - name: Check commit messages for exercise 11.16
+      # env:
+      #  COMMIT_MESSAGES: ${{toJson(github.event.commits.*.message)}}
+      # run: echo '$COMMIT_MESSAGES' && echo '${{github.ref}}' && echo '${{github.event_name}}'
   # deployment to Render
   deployment_to_render:
     if: ${{github.event_name == ('push' || 'pull_request') && github.ref == 'refs/heads/master' && !contains(toJson(github.event.commits.*.message), '#skip')}}
@@ -78,7 +83,7 @@ jobs:
         with:
           webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
           severity: 'info'
-          text: 'Test was successful'
+          text: 'Tests were successful'
           details: 'Testing initiated by ${{github.triggering_actor}} was success.'
       - name: 'Failed test'
         if: ${{failure()}}
@@ -109,3 +114,23 @@ jobs:
           severity: 'error'
           text: 'Build & deployment failure'
           details: 'Build initiated by ${{github.triggering_actor}} failed. SOS! Please fix errors.'
+          steps:
+      - name: Check the deployed service URL
+        uses: jtalk/url-health-check-action@v3
+        with:
+          # Check the following URLs one by one sequentially 'https://example.com|http://example.com|http://example.com'
+          url: 'https://pokedex-exercise.onrender.com/'
+          # Follow redirects, or just report success on 3xx status codes
+          follow-redirect: false # Optional, defaults to "false"
+          # Fail this action after this many failed attempts
+          max-attempts: 10 # Optional, defaults to 1
+          # Delay between retries
+          retry-delay: '60s' # Optional, only applicable to max-attempts > 1
+          # Retry all errors, including 404. This option might trigger curl upgrade.
+          retry-all: false # Optional, defaults to "false"
+          # String representation of cookie attached to health check request.
+          # Format: `Name=Value`
+          # cookie: 'token=asdf1234' # Optional, default is empty
+          # Basic auth login password pair.
+          # Format: `login:password`
+          # basic-auth: 'login:password' # Optional, default is empty
