@@ -2,7 +2,7 @@ name: Periodic Check
 
 on:
   schedule:
-    - cron: 00 22 * * *
+    - cron: 30 20 * * *
 
 jobs:
   check_if_app_is_running_at_domain:
