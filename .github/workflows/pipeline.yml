@@ -63,11 +63,11 @@ jobs:
           retries: 5
           wait: 60000
           sleep: 10000
-          run: echo '::set-output name=FOO::BAR'
         env:
           STATE: echo ''::save-state name=FOO_STATE::foovalue'
+          OUTPUT: echo '::set-output name=FOO::BAR'
       - name: Output & State
-        run: echo ${{steps.render_deployment.outputs.FOO}} && echo '$STATE'
+        run: echo '$OUTPUT' && echo '$STATE'
       - name: Check app's health status
         run: curl -i https://pokedex-exercise.onrender.com/health
   # tag release and bumbing it on Github
