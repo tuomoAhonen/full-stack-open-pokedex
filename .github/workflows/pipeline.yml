@@ -103,8 +103,8 @@ jobs:
           text: 'Tests were successful'
           details: 'Testing initiated by ${{github.triggering_actor}} was success.'
   deployment_failure_notify_to_discord:
-    needs: [testing, deployment_to_render, tag_release]
-    if: ${{needs.testing.result == 'success' && needs.deployment_to_render.result == 'failure' && needs.tag_release.result == 'failure'}}
+    needs: [testing, deployment_to_render]
+    if: ${{needs.testing.result == 'success' && needs.deployment_to_render.result == 'failure' && github.event.deployment_status.state == 'failure'}}
     runs-on: ubuntu-latest
     steps:
       - name: 'Failed build & deployment'
@@ -115,8 +115,8 @@ jobs:
           text: 'Build & deployment failure'
           details: 'Build initiated by ${{github.triggering_actor}} failed. SOS! Please fix errors.'
   deployment_success_notify_to_discord:
-    needs: [testing, deployment_to_render, tag_release]
-    if: ${{needs.testing.result == 'success' && needs.deployment_to_render.result == 'success' && needs.tag_release.result == 'success'}}
+    needs: [testing, deployment_to_render]
+    if: ${{needs.testing.result == 'success' && needs.deployment_to_render.result == 'success' && github.event.deployment_status.state == 'success'}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
