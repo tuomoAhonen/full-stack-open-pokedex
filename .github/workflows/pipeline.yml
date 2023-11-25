@@ -72,45 +72,54 @@ jobs:
           WITH_V: true
           INITIAL_VERSION: 1.0.0
   # just a check, that deployment and versioning still works
-  testing_notify_to_discord:
+  testing_failure_notify_to_discord:
     needs: [testing]
+    if: ${{failure()}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: 'Successful test'
-        if: ${{success()}}
-        uses: rjstone/discord-webhook-notify@v1
-        with:
-          webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
-          severity: 'info'
-          text: 'Tests were successful'
-          details: 'Testing initiated by ${{github.triggering_actor}} was success.'
       - name: 'Failed test'
-        if: ${{failure()}}
         uses: rjstone/discord-webhook-notify@v1
         with:
           webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
           severity: 'error'
           text: 'Test failed'
           details: 'Testing initiated by ${{github.triggering_actor}} has errors. SOS! Please fix errors before merging to master branch.'
-  deployment_notify_to_discord:
-    needs: [testing, deployment_to_render]
+  testing_success_notify_to_discord:
+    needs: [testing]
+    if: ${{success()}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: 'Successful build & deployment with push'
-        if: ${{success()}}
+      - name: 'Successful test'
         uses: rjstone/discord-webhook-notify@v1
         with:
           webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
           severity: 'info'
-          text: 'New version of the app is deployed & runs at https://pokedex-exercise.onrender.com/'
-          details: 'Build initiated by ${{github.triggering_actor}} was success.'
+          text: 'Tests were successful'
+          details: 'Testing initiated by ${{github.triggering_actor}} was success.'
+  deployment_failure_notify_to_discord:
+    needs: [testing, deployment_to_render]
+    if: ${{failure()}}
+    runs-on: ubuntu-latest
+    steps:
       - name: 'Failed build & deployment'
-        if: ${{failure()}}
         uses: rjstone/discord-webhook-notify@v1
         with:
           webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
           severity: 'error'
           text: 'Build & deployment failure'
           details: 'Build initiated by ${{github.triggering_actor}} failed. SOS! Please fix errors.'
+  deployment_success_notify_to_discord:
+    needs: [testing, deployment_to_render]
+    if: ${{success()}}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 'Successful build & deployment with push'
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
+          severity: 'info'
+          text: 'New version of the app is deployed & runs at https://pokedex-exercise.onrender.com/'
+          details: 'Build initiated by ${{github.triggering_actor}} was success.'
