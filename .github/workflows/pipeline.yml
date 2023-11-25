@@ -52,7 +52,7 @@ jobs:
     steps:
       - name: Render Depoloyment trigger after successful tests
         # deployment should fail, unless string '123' is removed from end of the next line (removed)
-        run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICEID}}?key=${{secrets.RENDER_TOKEN}}
+        run: curl https://api.render.com/deploy/${{secrets.RENDER_SERVICEID}}?key=${{secrets.RENDER_TOKEN}}
       - name: Wait for Render Deployment
         uses: bounceapp/render-action@0.6.0
         with:
