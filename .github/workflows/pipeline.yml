@@ -53,6 +53,10 @@ jobs:
       - name: Render Depoloyment trigger after successful tests
         # deployment should fail, unless string '123' is removed from end of the next line (removed)
         run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICEID}}?key=${{secrets.RENDER_APIKEY}}12345
+      - name: Check that app is running on render
+        #env:
+        #APP_STATUS: run curl -i https://pokedex-exercise.onrender.com/health
+        run: curl -i https://pokedex-exercise.onrender.com/health
   # tag release and bumbing it on Github
   tag_release:
     if: ${{github.event_name == ('push' || 'pull_request') && github.ref == 'refs/heads/master' && !contains(toJson(github.event.commits.*.message), '#skip')}}
