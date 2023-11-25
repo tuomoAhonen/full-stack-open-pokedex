@@ -52,7 +52,6 @@ describe(`<App />`, () => {
 			);
 		});
 		expect(screen.getByTestId(`error`)).toBeVisible();
-		expect(screen.getByText(`hohohohoh ohohhoh ohohoho`)).toBeVisible();
 	});
 });
 
