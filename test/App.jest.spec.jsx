@@ -52,6 +52,7 @@ describe(`<App />`, () => {
 			);
 		});
 		expect(screen.getByTestId(`error`)).toBeVisible();
+		expect(screen.getByText(`should cause error and notify to discord`)).toBeVisible();
 	});
 });
 
