@@ -52,7 +52,7 @@ jobs:
     steps:
       - name: Render Depoloyment trigger after successful tests
         # deployment should fail, unless string '123' is removed from end of the next line (removed)
-        run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICEID}}?key=${{secrets.RENDER_APIKEY}}12345
+        run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICEID}}?key=${{secrets.RENDER_APIKEY}}
       - name: Check that app is running on render
         #env:
         #APP_STATUS: run curl -i https://pokedex-exercise.onrender.com/health
@@ -104,7 +104,7 @@ jobs:
           details: 'Testing initiated by ${{github.triggering_actor}} was success.'
   deployment_failure_notify_to_discord:
     needs: [testing, deployment_to_render]
-    if: ${{needs.testing.result == 'success' && needs.deployment_to_render.result == 'failure' && github.event.deployment_status.deployment_status.state == 'failure'}}
+    if: ${{needs.testing.result == 'success' && needs.deployment_to_render.result == 'failure'}}
     runs-on: ubuntu-latest
     steps:
       - name: 'Failed build & deployment'
@@ -116,7 +116,7 @@ jobs:
           details: 'Build initiated by ${{github.triggering_actor}} failed. SOS! Please fix errors.'
   deployment_success_notify_to_discord:
     needs: [testing, deployment_to_render]
-    if: ${{needs.testing.result == 'success' && needs.deployment_to_render.result == 'success' && github.event.deployment_status.deployment_status.state == 'success'}}
+    if: ${{needs.testing.result == 'success' && needs.deployment_to_render.result == 'success'}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
