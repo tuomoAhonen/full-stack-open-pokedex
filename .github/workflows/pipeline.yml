@@ -64,8 +64,8 @@ jobs:
           wait: 60000
           sleep: 10000
         env:
-          STATE: '::save-state::foovalue'
-          OUTPUT: '::set-output::BAR'
+          STATE: echo '::save-state::foovalue'
+          OUTPUT: echo '::set-output::BAR'
       - name: Output & State
         run: echo '$OUTPUT' && echo '$STATE'
       - name: Check app's health status
