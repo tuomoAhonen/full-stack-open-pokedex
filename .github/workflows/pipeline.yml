@@ -63,10 +63,10 @@ jobs:
           retries: 5
           wait: 60000
           sleep: 10000
-        env:
-          STATE: echo '::save-state::foovalue'
-          OUTPUT: echo '::set-output::BAR'
       - name: Output & State
+        env:
+          STATE: echo '::save-state ::foovalue'
+          OUTPUT: echo '::set-output ::BAR'
         run: echo '$OUTPUT' && echo '$STATE'
       - name: Check app's health status
         run: curl -i https://pokedex-exercise.onrender.com/health
