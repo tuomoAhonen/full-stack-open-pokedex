@@ -62,11 +62,6 @@ jobs:
           retries: 5
           wait: 60000
           sleep: 10000
-        env:
-          STATE: echo '::save-state'
-          OUTPUT: echo '::set-output'
-      - name: Output & State
-        run: echo '$OUTPUT' && echo '$STATE' && echo '${{github.env.STATE}}' && echo '${{github.env.OUTPUT}}'
       - name: Check app's health status
         run: curl -i https://pokedex-exercise.onrender.com/health
   # tag release and bumbing it on Github
