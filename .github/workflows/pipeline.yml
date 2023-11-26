@@ -54,7 +54,6 @@ jobs:
         # deployment should fail, unless string '123' is removed from end of the next line (removed)
         run: curl https://api.render.com/deploy/${{secrets.RENDER_SERVICEID}}?key=${{secrets.RENDER_TOKEN}}
       - name: Wait for Render Deployment
-        id: render_deployment
         uses: bounceapp/render-action@0.6.0
         with:
           render-token: ${{secrets.RENDER_APIKEY}}
@@ -63,11 +62,11 @@ jobs:
           retries: 5
           wait: 60000
           sleep: 10000
-      - name: Output & State
         env:
-          STATE: echo '::save-state ::foovalue'
-          OUTPUT: echo '::set-output ::BAR'
-        run: echo '$OUTPUT' && echo '$STATE'
+          STATE: echo '::save-state'
+          OUTPUT: echo '::set-output'
+      - name: Output & State
+        run: echo '$OUTPUT' && echo '$STATE' && echo '${{github.env.STATE}}' && echo '${{github.env.OUTPUT}}'
       - name: Check app's health status
         run: curl -i https://pokedex-exercise.onrender.com/health
   # tag release and bumbing it on Github
