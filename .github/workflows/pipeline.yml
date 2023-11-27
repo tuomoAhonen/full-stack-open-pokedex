@@ -63,9 +63,7 @@ jobs:
           wait: 60000
           sleep: 10000
       - name: Check app's health status
-        env:
-          HEALTH_STATUS: curl -i https://pokedex-exercise.onrender.com/health
-        run: echo $HEALTH_STATUS
+        run: curl -i https://pokedex-exercise.onrender.com/health
       #- name: Check app's health status
       #run: curl -i https://pokedex-exercise.onrender.com/health
   # tag release and bumbing it on Github
