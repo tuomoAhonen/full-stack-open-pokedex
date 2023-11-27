@@ -63,7 +63,11 @@ jobs:
           wait: 60000
           sleep: 10000
       - name: Check app's health status
-        run: curl -i https://pokedex-exercise.onrender.com/health
+        env:
+          HEALTH_STATUS: curl -i https://pokedex-exercise.onrender.com/health
+        run: echo $HEALTH_STATUS
+      #- name: Check app's health status
+      #run: curl -i https://pokedex-exercise.onrender.com/health
   # tag release and bumbing it on Github
   tag_release:
     if: ${{github.event_name == ('push' || 'pull_request') && github.ref == 'refs/heads/master' && !contains(toJson(github.event.commits.*.message), '#skip')}}
