@@ -85,7 +85,7 @@ jobs:
   # just a check, that deployment and versioning still works
   testing_failure_notify_to_discord:
     needs: [testing]
-    if: ${{failure()}}
+    if: ${{always() && needs.testing.result == 'failure'}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -98,7 +98,7 @@ jobs:
           details: 'Testing initiated by ${{github.triggering_actor}} has errors. SOS! Please fix errors before merging to master branch.'
   testing_success_notify_to_discord:
     needs: [testing]
-    if: ${{success()}}
+    if: ${{always() && needs.testing.result == 'success'}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
